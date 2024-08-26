@@ -43,7 +43,6 @@ class MotorConstants:
         cs = max(0, min(31, int(math.ceil(rsense * 32 * I / 0.32) - 1)))
         logging.info("current scale = %d", cs)
         hysteresis = extra + int(math.ceil(max(0.5 + ((dcoilblank + dcoilsd) * 2 * 248 * (cs + 1) / I ) / 32 - 8, -2)))
-                                          =MAX(0,5 +  (C23+C24)              * 2 * 248 * (C26 +1) /C17  / 32 - 8;-2)
         hstrt = max(min(hysteresis, 8), 1)
         hend = min(hysteresis - hstrt, 12)
         logging.info("hysteresis = %d, hstrt = %d, hend = %d, extra = %d", hysteresis, hstrt, hend, extra)
