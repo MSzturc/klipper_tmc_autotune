@@ -41,7 +41,6 @@ class MotorConstants:
         dcoilsd = self.R * I * 2.0 * tsd / self.L
         logging.info("dcoilblank = %f, dcoilsd = %f", dcoilblank, dcoilsd)
         hysteresis = extra + int(math.ceil(max(0.5 + ((dcoilblank + dcoilsd) * 2 * 248 * 32 / I) / 32 - 8, -2)))
-        htotal = min(hysteresis, 14)
         hstrt = max(min(hysteresis, 8), 1)
         hend = min(hysteresis - hstrt, 12)
         logging.info("hysteresis = %d, hstrt = %d, hend = %d", hysteresis, hstrt, hend)
