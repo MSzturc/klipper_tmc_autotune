@@ -111,6 +111,7 @@ class AutotuneTMC:
         self.fclk = None
         self.motor_object = None
         self.rsense = config.getfloat('sense_resistor', 0.075, above=0.)
+        self.cs = config.getfgetintloat('cs', 0, minval=0, maxval=31)
         self.extra_hysteresis = config.getint('extra_hysteresis', default=EXTRA_HYSTERESIS,
                                               minval=0, maxval=8)
         self.tbl = config.getint('tbl', default=TBL, minval=0, maxval=3)
@@ -286,7 +287,8 @@ class AutotuneTMC:
             toff=self.toff,
             fclk=self.fclk,
             extra=self.extra_hysteresis,
-            rsense=self.rsense
+            rsense=self.rsense,
+            scale=self.cs
             )
         self._set_driver_field('hstrt', hstrt)
         self._set_driver_field('hend', hend)
