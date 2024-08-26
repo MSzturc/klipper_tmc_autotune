@@ -16,8 +16,6 @@ class MotorConstants:
         self.T = config.getfloat('holding_torque', minval=0.)
         self.S = config.getint('steps_per_revolution', minval=0)
         self.I = config.getfloat('max_current', minval=0.)
-        self.Rsens = config.getfloat('sense_resistor', 0.075, above=0.)
-        logging.info("autotune_tmc Rsens: %s", self.Rsens)
         self.cbemf = self.T / (2.0 * self.I)
     def pwmgrad(self, fclk=12.5e6, steps=0, volts=24.0):
         if steps==0:
@@ -31,12 +29,14 @@ class MotorConstants:
         if steps==0:
             steps=self.S
         return (255 - self.pwmofs(volts, current)) / ( math.pi * self.pwmgrad(fclk, steps))
-    def hysteresis(self, extra=0, fclk=12.5e6, volts=24.0, current=0.0, tbl=1, toff=0):
+    def hysteresis(self, extra=0, fclk=12.5e6, volts=24.0, current=0.0, tbl=1, toff=0, rsense=0.075):
         if current > 0.0:
             I = current * math.sqrt(2)
         else:
             I = self.I
         logging.info("autotune_tmc seting hysteresis based on %s V at %s A", volts,I)
+        logging.info("autotune_tmc Rsens: %s", rsense)
+
         tblank = 16.0 * (1.5 ** tbl) / fclk
         tsd = (12.0 + 32.0 * toff) / fclk
         dcoilblank = volts * tblank / self.L
