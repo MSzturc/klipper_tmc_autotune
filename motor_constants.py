@@ -16,6 +16,8 @@ class MotorConstants:
         self.T = config.getfloat('holding_torque', minval=0.)
         self.S = config.getint('steps_per_revolution', minval=0)
         self.I = config.getfloat('max_current', minval=0.)
+        self.Rsens = config.getfloat('sense_resistor', 0.075, above=0.)
+        logging.info("autotune_tmc Rsens: %s", self.Rsens)
         self.cbemf = self.T / (2.0 * self.I)
     def pwmgrad(self, fclk=12.5e6, steps=0, volts=24.0):
         if steps==0:
