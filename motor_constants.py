@@ -35,14 +35,13 @@ class MotorConstants:
         else:
             I = self.I
         logging.info("autotune_tmc seting hysteresis based on %s V at %s A", volts,I)
-        logging.info("autotune_tmc Rsens: %s", rsense)
-
         tblank = 16.0 * (1.5 ** tbl) / fclk
         tsd = (12.0 + 32.0 * toff) / fclk
         dcoilblank = volts * tblank / self.L
         dcoilsd = self.R * I * 2.0 * tsd / self.L
         logging.info("dcoilblank = %f, dcoilsd = %f", dcoilblank, dcoilsd)
-        hysteresis = extra + int(math.ceil(max(0.5 + ((dcoilblank + dcoilsd) * 2 * 248 * 32 / I) / 32 - 8, -2)))
+        cs = max(0, min(31, int(math.ceil(rsense * 32 * I / 0.32) - 1)))
+        hysteresis = extra + int(math.ceil(max(0.5 + ((dcoilblank + dcoilsd) * 2 * 248 * (cs + 1) / I) / 32 - 8, -2)))
         hstrt = max(min(hysteresis, 8), 1)
         hend = min(hysteresis - hstrt, 12)
         logging.info("hysteresis = %d, hstrt = %d, hend = %d", hysteresis, hstrt, hend)
