@@ -31,7 +31,7 @@ class MotorConstants:
         return (255 - self.pwmofs(volts, current)) / ( math.pi * self.pwmgrad(fclk, steps))
     def hysteresis(self, extra=0, fclk=12.5e6, volts=24.0, current=0.0, tbl=1, toff=0):
         if current > 0.0:
-            I = current * 1.414
+            I = current * math.sqrt(2)
         else:
             I = self.I
         logging.info("autotune_tmc seting hysteresis based on %s V at %s A", volts,I)
